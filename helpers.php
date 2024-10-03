@@ -63,7 +63,7 @@ function inspect($value)
 
 
 /**
- * Insoect a value('s) and die
+ * Inspect a value('s) and die
  * 
  * @param mixed $value
  * @return void
@@ -75,4 +75,16 @@ function dd($value)
   var_dump($value);
   echo '</pre>';
   die();
+}
+
+/**
+ * Format salary
+ * 
+ * @param mixed $salary
+ * @return string
+ */
+
+function format_salary($salary)
+{
+  return '$' . number_format($salary);
 }
