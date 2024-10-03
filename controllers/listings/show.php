@@ -9,6 +9,6 @@ $params = [
   'id' => $id
 ];
 
-$listing = $db->query('SELECT * FROM listings WHERE id = :id', $params)->fetchAll();
+$listing = $db->query('SELECT * FROM listings WHERE id = :id', $params)->fetch();
 
-load_view('listings/show', ['listing' => $listing[0]]);
+load_view('listings/show', ['listing' => $listing]);
