@@ -20,11 +20,15 @@ function base_path($path = '')
  * @return void
  */
 
-function load_view($name)
+function load_view($name, $data = [])
 {
   $view = base_path("views/{$name}.view.php");
-  if (file_exists($view))
+  if (file_exists($view)) {
+    extract($data);
     require $view;
+  } else {
+    echo "View {$name} not found";
+  }
 }
 
 

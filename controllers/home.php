@@ -5,4 +5,4 @@ $db = new Database($config);
 
 $listings = $db->query('SELECT * FROM listings')->fetchAll();
 
-load_view('home');
+load_view('home', ['listings' => $listings]);
