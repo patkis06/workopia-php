@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use Error;
 use Framework\Database;
 
 class ListingController
@@ -41,15 +42,20 @@ class ListingController
    * 
    * @return void
    */
-  public function show()
+  public function show($params)
   {
-    $id = $_GET['id'];
+    $id = $params[1];
 
     $params = [
       'id' => $id
     ];
 
     $listing = $this->db->query('SELECT * FROM listings WHERE id = :id', $params)->fetch();
+
+    if (!$listing) {
+      ErrorController::notFound('Listing not found!');
+      return;
+    }
 
     load_view('listings/show', ['listing' => $listing]);
   }
