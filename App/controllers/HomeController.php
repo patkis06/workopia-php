@@ -14,6 +14,12 @@ class HomeController
     $this->db = new Database($config);
   }
 
+  /**
+   * Show the home page.
+   * 
+   * @return void
+   */
+
   public function index()
   {
     $listings = $this->db->query('SELECT * FROM listings')->fetchAll();
