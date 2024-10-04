@@ -1,9 +1,11 @@
 <?php
 
-require '../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 require '../helpers.php';
 
-$router = new Router();
+use Framework\Router;
+
+$router = new Framework\Router();
 
 $routes = require base_path('routes.php');
 

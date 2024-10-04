@@ -1,5 +1,10 @@
 <?php
 
+namespace Framework;
+
+use PDO;
+use PDOException;
+
 /**
  * Constructor for Database class
  * 
