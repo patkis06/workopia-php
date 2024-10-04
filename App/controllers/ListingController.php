@@ -19,7 +19,6 @@ class ListingController
    * 
    * @return void
    */
-
   public function index()
   {
     $listings = $this->db->query('SELECT * FROM listings')->fetchAll();
@@ -27,25 +26,21 @@ class ListingController
     load_view('listings/index', ['listings' => $listings]);
   }
 
-
   /**
    * Show the create listing page.
    * 
    * @return void
    */
-
   public function create()
   {
     load_view('listings/create');
   }
-
 
   /**
    * Show a single listing
    * 
    * @return void
    */
-
   public function show()
   {
     $id = $_GET['id'];

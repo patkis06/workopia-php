@@ -19,7 +19,6 @@ class HomeController
    * 
    * @return void
    */
-
   public function index()
   {
     $listings = $this->db->query('SELECT * FROM listings')->fetchAll();

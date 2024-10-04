@@ -2,6 +2,8 @@
 
 namespace Framework;
 
+use App\Controllers\ErrorController;
+
 class Router
 {
   protected $routes = [];
@@ -14,7 +16,6 @@ class Router
    * @param string $action
    * @return void
    */
-
   public function register_route($method, $uri, $action)
   {
     list($controller, $action) = explode('@', $action);
@@ -27,7 +28,6 @@ class Router
     ];
   }
 
-
   /**
    * Add get route
    * 
@@ -35,12 +35,10 @@ class Router
    * @param string $controller
    * @return void
    */
-
   public function get($uri, $controller)
   {
     $this->register_route('GET', $uri, $controller);
   }
-
 
   /**
    * Add post route
@@ -49,12 +47,10 @@ class Router
    * @param string $controller
    * @return void
    */
-
   public function post($uri, $controller)
   {
     $this->register_route('POST', $uri, $controller);
   }
-
 
   /**
    * Add put route
@@ -63,12 +59,10 @@ class Router
    * @param string $controller
    * @return void
    */
-
   public function put($uri, $controller)
   {
     $this->register_route('PUT', $uri, $controller);
   }
-
 
   /**
    * Add delete route
@@ -77,28 +71,10 @@ class Router
    * @param string $controller
    * @return void
    */
-
   public function delete($uri, $controller)
   {
     $this->register_route('DELETE', $uri, $controller);
   }
-
-
-  /**
-   * Load error page
-   * 
-   * @param int $http_response_code
-   * 
-   * @return void
-   */
-
-  public function error($http_response_code = 404)
-  {
-    http_response_code($http_response_code);
-    load_view("error/{$http_response_code}");
-    exit;
-  }
-
 
   /**
    * Route the request
@@ -107,7 +83,6 @@ class Router
    * @param string $controller
    * @return void
    */
-
   public function route($uri, $method)
   {
     foreach ($this->routes as $route) {
@@ -122,6 +97,6 @@ class Router
       }
     }
 
-    $this->error();
+    ErrorController::notFound();
   }
 }
