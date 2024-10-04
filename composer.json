@@ -1,0 +1,19 @@
+{
+  "name": "workopia/workopia",
+  "description": "Job listing portal",
+  "type": "project",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Framework\\": "Framework/",
+      "App\\": "App/"
+    }
+  },
+  "authors": [
+    {
+      "name": "patkis",
+      "email": "p.kiss8888@gmail.com"
+    }
+  ],
+  "require": {}
+}
