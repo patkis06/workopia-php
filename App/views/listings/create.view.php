@@ -26,7 +26,7 @@
         <input
           type="text"
           name="title"
-          ≈
+          value="<?= $data['title'] ?? '' ?>"
           placeholder="Job Title"
           class="w-full px-4 py-2 border rounded focus:outline-none" />
       </div>
@@ -47,8 +47,8 @@
       <div class="mb-4">
         <input
           type="text"
-          name="requirements"
-          value="<?= $data['requirements'] ?? '' ?>"
+          name="requirments"
+          value="<?= $data['requirments'] ?? '' ?>"
           placeholder="Requirements"
           class="w-full px-4 py-2 border rounded focus:outline-none" />
       </div>
@@ -58,6 +58,14 @@
           name="benefits"
           value="<?= $data['benefits'] ?? '' ?>"
           placeholder="Benefits"
+          class="w-full px-4 py-2 border rounded focus:outline-none" />
+      </div>
+      <div class="mb-4">
+        <input
+          type="text"
+          name="tags"
+          value="<?= $data['tags'] ?? '' ?>"
+          placeholder="Tags"
           class="w-full px-4 py-2 border rounded focus:outline-none" />
       </div>
       <h2 class="text-2xl font-bold mb-6 text-center text-gray-500">

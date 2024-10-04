@@ -45,10 +45,8 @@ class ListingController
    */
   public function show($params)
   {
-    $id = $params[1];
-
     $params = [
-      'id' => $id
+      'id' => $params[1]
     ];
 
     $listing = $this->db->query('SELECT * FROM listings WHERE id = :id', $params)->fetch();
@@ -68,13 +66,13 @@ class ListingController
    */
   function store()
   {
-    $allowed = ['title', 'description', 'salary', 'tags', 'company', 'address', 'city', 'state', 'phone', 'email', 'requirements', 'benefits'];
+    $allowed = ['title', 'description', 'salary', 'tags', 'company', 'address', 'city', 'state', 'phone', 'email', 'requirments', 'benefits'];
 
     $data = array_map('sanitize', array_intersect_key($_POST, array_flip($allowed)));
 
     $data['user_id'] = 1;
 
-    $required = ['title', 'description', 'city', 'state', 'email'];
+    $required = ['title', 'description', 'city', 'state', 'email', 'salary'];
 
     $errors = [];
 
@@ -88,32 +86,31 @@ class ListingController
       load_view('listings/create', ['errors' => $errors, 'data' => $data]);
       return;
     } else {
-      $this->db->query('INSERT INTO listings (title, description, salary, tags, company, address, city, state, phone, email, requirements, benefits) VALUES (:title, :description, :salary, :tags, :company, :address, :city, :state, :phone, :email, :requirements, :benefits)', $data);
+      $fields = [];
 
-      // redirect('/listings');
+      foreach ($data as $field => $value) {
+        $fields[] = $field;
+      }
+
+      $fields = implode(', ', $fields);
+
+      $values = [];
+
+      foreach ($data as $field => $value) {
+        if ($value === '') {
+          $data[$field] = null;
+        }
+
+        $values[] = ':' . $field;
+      }
+
+      $values = implode(', ', $values);
+
+      $query = "INSERT INTO listings ({$fields}) VALUES ({$values})";
+
+      $this->db->query($query, $data);
+
+      redirect('listings');
     }
-    dd($errors);
-
-    $this->db->query('INSERT INTO listings (title, description, salary, tags, company, address, city, state, phone, email, requirements, benefits) VALUES (:title, :description, :salary, :tags, :company, :address, :city, :state, :phone, :email, :requirements, :benefits)', $data);
-
-    $title = $_POST['title'];
-    $description = $_POST['description'];
-    $salary = $_POST['salary'];
-    $requirements = $_POST['requirements'];
-    $benefits = $_POST['benefits'];
-    $company = $_POST['company'];
-
-    $params = [
-      'title' => $title,
-      'description' => $description,
-      'salary' => $salary,
-      'requirements' => $requirements,
-      'benefits' => $benefits,
-      'company' => $company
-    ];
-
-    $this->db->query('INSERT INTO listings (title, description, salary, requirements, benefits, company) VALUES (:title, :description, :salary, :requirements, :benefits, :company)', $params);
-
-    // redirect('/listings');
   }
 }

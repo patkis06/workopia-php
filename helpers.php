@@ -83,7 +83,6 @@ function dd($value)
  * @param mixed $salary
  * @return string
  */
-
 function format_salary($salary)
 {
   return '$' . number_format($salary);
@@ -92,4 +91,10 @@ function format_salary($salary)
 function sanitize($data)
 {
   return filter_var(trim($data), FILTER_SANITIZE_SPECIAL_CHARS);
+}
+
+function redirect($path)
+{
+  header("Location: /{$path}");
+  exit;
 }
