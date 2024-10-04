@@ -4,8 +4,9 @@ require __DIR__ . '/../vendor/autoload.php';
 require '../helpers.php';
 
 use Framework\Router;
+use Framework\Validation;
 
-$router = new Framework\Router();
+$router = new Router();
 
 $routes = require base_path('routes.php');
 
