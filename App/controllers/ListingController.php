@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use Error;
 use Framework\Database;
+use Framework\Validation;
 
 class ListingController
 {
@@ -58,5 +59,61 @@ class ListingController
     }
 
     load_view('listings/show', ['listing' => $listing]);
+  }
+
+  /**
+   * Store a new listing
+   * 
+   * @return void
+   */
+  function store()
+  {
+    $allowed = ['title', 'description', 'salary', 'tags', 'company', 'address', 'city', 'state', 'phone', 'email', 'requirements', 'benefits'];
+
+    $data = array_map('sanitize', array_intersect_key($_POST, array_flip($allowed)));
+
+    $data['user_id'] = 1;
+
+    $required = ['title', 'description', 'city', 'state', 'email'];
+
+    $errors = [];
+
+    foreach ($required as $field) {
+      if (!Validation::string($field) || empty($data[$field])) {
+        $errors[$field] = 'The ' . ucfirst($field) . ' field is required';
+      }
+    }
+
+    if (!empty($errors)) {
+      load_view('listings/create', ['errors' => $errors, 'data' => $data]);
+      return;
+    } else {
+      $this->db->query('INSERT INTO listings (title, description, salary, tags, company, address, city, state, phone, email, requirements, benefits) VALUES (:title, :description, :salary, :tags, :company, :address, :city, :state, :phone, :email, :requirements, :benefits)', $data);
+
+      // redirect('/listings');
+    }
+    dd($errors);
+
+    $this->db->query('INSERT INTO listings (title, description, salary, tags, company, address, city, state, phone, email, requirements, benefits) VALUES (:title, :description, :salary, :tags, :company, :address, :city, :state, :phone, :email, :requirements, :benefits)', $data);
+
+    $title = $_POST['title'];
+    $description = $_POST['description'];
+    $salary = $_POST['salary'];
+    $requirements = $_POST['requirements'];
+    $benefits = $_POST['benefits'];
+    $company = $_POST['company'];
+
+    $params = [
+      'title' => $title,
+      'description' => $description,
+      'salary' => $salary,
+      'requirements' => $requirements,
+      'benefits' => $benefits,
+      'company' => $company
+    ];
+
+    $this->db->query('INSERT INTO listings (title, description, salary, requirements, benefits, company) VALUES (:title, :description, :salary, :requirements, :benefits, :company)', $params);
+
+    // redirect('/listings');
   }
 }
