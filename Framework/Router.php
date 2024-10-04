@@ -11,16 +11,19 @@ class Router
    * 
    * @param string $method
    * @param string $uri
-   * @param string $controller
+   * @param string $action
    * @return void
    */
 
-  public function register_route($method, $uri, $controller)
+  public function register_route($method, $uri, $action)
   {
+    list($controller, $action) = explode('@', $action);
+
     $this->routes[] = [
       'method' => $method,
       'uri' => $uri,
-      'controller' => $controller
+      'controller' => $controller,
+      'action' => $action
     ];
   }
 
@@ -109,7 +112,12 @@ class Router
   {
     foreach ($this->routes as $route) {
       if ($route['uri'] === $uri && $route['method'] === $method) {
-        require base_path('App/' . $route['controller']);
+        $controller = "App\\Controllers\\{$route['controller']}";
+        $controller = new $controller;
+        $action = $route['action'];
+
+        $controller->$action();
+
         return;
       }
     }
