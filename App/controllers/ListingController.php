@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use Error;
 use Framework\Database;
 use Framework\Validation;
 
@@ -109,6 +108,8 @@ class ListingController
       $query = "INSERT INTO listings ({$fields}) VALUES ({$values})";
 
       $this->db->query($query, $data);
+
+      $_SESSION['success_message'] = 'Listing created successfully!';
 
       redirect('listings');
     }
