@@ -19,6 +19,7 @@
         <!-- End Delete Form -->
       </div>
     </div>
+    <?= load_partial('message') ?>
     <div class="p-4">
       <h2 class="text-xl font-semibold"><?= $listing->title ?></h2>
       <p class="text-gray-700 text-lg mt-2">
