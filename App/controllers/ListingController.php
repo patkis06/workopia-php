@@ -114,4 +114,48 @@ class ListingController
       redirect('listings');
     }
   }
+
+  /**
+   * Edit a single listing
+   * 
+   * @return void
+   */
+  public function edit($params)
+  {
+    $params = [
+      'id' => $params[2]
+    ];
+
+    $listing = $this->db->query('SELECT * FROM listings WHERE id = :id', $params)->fetch();
+
+    if (!$listing) {
+      ErrorController::notFound('Listing not found!');
+      return;
+    }
+
+    load_view('listings/edit', ['data' => $listing]);
+  }
+
+  /**
+   * Delete a listing
+   * 
+   * @return void
+   */
+  public function destroy($params)
+  {
+    $params = [
+      'id' => $params[1]
+    ];
+
+    $listing = $this->db->query('SELECT * FROM listings WHERE id = :id', $params)->fetch();
+
+    if (!$listing) {
+      ErrorController::notFound('Listing not found!');
+      return;
+    }
+
+    $this->db->query('DELETE FROM listings WHERE id = :id', $params);
+
+    redirect('listings');
+  }
 }

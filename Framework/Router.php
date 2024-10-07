@@ -80,7 +80,6 @@ class Router
    * Route the request
    * 
    * @param string $uri
-   * @param string $controller
    * @return void
    */
   public function route($uri)
@@ -92,7 +91,13 @@ class Router
 
       $matched = true;
 
-      if (count($uri_segments) === count($route_segments) && strtoupper($_SERVER['REQUEST_METHOD'] === $route['method'])) {
+      $method = strtoupper($_SERVER['REQUEST_METHOD']);
+
+      if ($method === 'POST' && isset($_POST['_method'])) {
+        $method = strtoupper($_POST['_method']);
+      }
+
+      if (count($uri_segments) === count($route_segments) && $method === $route['method']) {
         $params = [];
 
         $matched = true;
