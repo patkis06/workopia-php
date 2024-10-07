@@ -39,11 +39,13 @@ function load_view($name, $data = [])
  * @return void
  */
 
-function load_partial($name)
+function load_partial($name, $data = [])
 {
   $view = base_path("App/views/partials/{$name}.php");
-  if (file_exists($view))
+  if (file_exists($view)) {
+    extract($data);
     require $view;
+  }
 }
 
 
@@ -93,7 +95,7 @@ function sanitize($data)
   return filter_var(trim($data), FILTER_SANITIZE_SPECIAL_CHARS);
 }
 
-function redirect($path)
+function redirect($path = '')
 {
   header("Location: /{$path}");
   exit;

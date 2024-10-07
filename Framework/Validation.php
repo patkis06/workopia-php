@@ -40,6 +40,13 @@ class Validation
     return false;
   }
 
+  public static function email_exists($email, $db)
+  {
+    $email = trim($email);
+    $query = $db->query("SELECT * FROM users WHERE email = :email", ['email' => $email]);
+    return $query->rowCount() === 0;
+  }
+
   /**
    * Match two values
    * 

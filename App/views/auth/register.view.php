@@ -9,11 +9,13 @@
         <div class="message bg-green-100 p-3 my-3">
           This is a success message.
         </div> -->
-    <form>
+    <?= load_partial('error', ['errors' => $errors ?? []]) ?>
+    <form method="POST" action="/auth/register">
       <div class="mb-4">
         <input
           type="text"
           name="name"
+          value="<?= isset($data['name']) ? $data['name'] : '' ?>"
           placeholder="Full Name"
           class="w-full px-4 py-2 border rounded focus:outline-none" />
       </div>
@@ -21,6 +23,7 @@
         <input
           type="email"
           name="email"
+          value="<?= isset($data['email']) ? $data['email'] : '' ?>"
           placeholder="Email Address"
           class="w-full px-4 py-2 border rounded focus:outline-none" />
       </div>
@@ -28,6 +31,7 @@
         <input
           type="text"
           name="city"
+          value="<?= isset($data['city']) ? $data['city'] : '' ?>"
           placeholder="City"
           class="w-full px-4 py-2 border rounded focus:outline-none" />
       </div>
@@ -35,6 +39,7 @@
         <input
           type="text"
           name="state"
+          value="<?= isset($data['state']) ? $data['state'] : '' ?>"
           placeholder="State"
           class="w-full px-4 py-2 border rounded focus:outline-none" />
       </div>
