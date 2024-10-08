@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use Framework\Database;
 use Framework\Validation;
+use Framework\Middleware\Auth;
 
 class ListingController
 {
@@ -69,7 +70,7 @@ class ListingController
 
     $data = array_map('sanitize', array_intersect_key($_POST, array_flip($allowed)));
 
-    $data['user_id'] = 1;
+    $data['user_id'] = Auth::user()['id'];
 
     $required = ['title', 'description', 'city', 'state', 'email', 'salary'];
 
@@ -128,6 +129,10 @@ class ListingController
 
     $listing = $this->db->query('SELECT * FROM listings WHERE id = :id', $params)->fetch();
 
+    if (!Auth::isOwner($listing->user_id)) {
+      redirect('listing/' . $params['id']);
+    }
+
     if (!$listing) {
       ErrorController::notFound('Listing not found!');
       return;
@@ -149,6 +154,10 @@ class ListingController
     ];
 
     $listing = $this->db->query('SELECT * FROM listings WHERE id = :id', $params)->fetch();
+
+    if (!Auth::isOwner($listing->user_id)) {
+      redirect('listing/' . $params['id']);
+    }
 
     if (!$listing) {
       ErrorController::notFound('Listing not found!');
@@ -208,6 +217,10 @@ class ListingController
     if (!$listing) {
       ErrorController::notFound('Listing not found!');
       return;
+    }
+
+    if (!Auth::isOwner($listing->user_id)) {
+      redirect('listing/' . $params['id']);
     }
 
     $this->db->query('DELETE FROM listings WHERE id = :id', $params);

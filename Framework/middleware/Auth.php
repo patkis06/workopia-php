@@ -18,6 +18,27 @@ class Auth
   }
 
   /**
+   * Check if user is the owner of a resource
+   * 
+   * @param int $user_id
+   * @return bool
+   */
+  public static function isOwner($user_id)
+  {
+    return Session::get('user')['id'] == $user_id;
+  }
+
+  /**
+   * Get the authenticated user
+   * 
+   * @return array
+   */
+  public static function user()
+  {
+    return Session::get('user');
+  }
+
+  /**
    * Handle middleware
    * 
    * @param string $role
