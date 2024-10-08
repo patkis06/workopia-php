@@ -97,4 +97,15 @@ class UserController
       redirect();
     }
   }
+
+  /**
+   * Logout a user
+   * 
+   * @return void
+   */
+  public function destroy()
+  {
+    Session::destroy();
+    redirect();
+  }
 }
