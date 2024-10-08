@@ -3,6 +3,7 @@
 namespace Framework;
 
 use App\Controllers\ErrorController;
+use Framework\Middleware\Auth;
 
 class Router
 {
@@ -16,7 +17,7 @@ class Router
    * @param string $action
    * @return void
    */
-  public function register_route($method, $uri, $action)
+  public function register_route($method, $uri, $action, $middleware = [])
   {
     list($controller, $action) = explode('@', $action);
 
@@ -24,7 +25,8 @@ class Router
       'method' => $method,
       'uri' => $uri,
       'controller' => $controller,
-      'action' => $action
+      'action' => $action,
+      'middleware' => $middleware
     ];
   }
 
@@ -35,9 +37,9 @@ class Router
    * @param string $controller
    * @return void
    */
-  public function get($uri, $controller)
+  public function get($uri, $controller, $middleware = [])
   {
-    $this->register_route('GET', $uri, $controller);
+    $this->register_route('GET', $uri, $controller, $middleware);
   }
 
   /**
@@ -47,9 +49,9 @@ class Router
    * @param string $controller
    * @return void
    */
-  public function post($uri, $controller)
+  public function post($uri, $controller, $middleware = [])
   {
-    $this->register_route('POST', $uri, $controller);
+    $this->register_route('POST', $uri, $controller, $middleware);
   }
 
   /**
@@ -59,9 +61,9 @@ class Router
    * @param string $controller
    * @return void
    */
-  public function put($uri, $controller)
+  public function put($uri, $controller, $middleware = [])
   {
-    $this->register_route('PUT', $uri, $controller);
+    $this->register_route('PUT', $uri, $controller, $middleware);
   }
 
   /**
@@ -71,9 +73,9 @@ class Router
    * @param string $controller
    * @return void
    */
-  public function delete($uri, $controller)
+  public function delete($uri, $controller, $middleware = [])
   {
-    $this->register_route('DELETE', $uri, $controller);
+    $this->register_route('DELETE', $uri, $controller, $middleware);
   }
 
   /**
@@ -114,6 +116,16 @@ class Router
         if ($matched) {
           $controller = "App\\Controllers\\{$route['controller']}";
           $controller = new $controller;
+
+          if (count($route['middleware']) > 0) {
+            foreach ($route['middleware'] as $middleware) {
+              $middlewareClass = "Framework\\Middleware\\{$middleware}";
+              $middlewareClass = new $middlewareClass;
+
+              $middlewareClass->handle();
+            }
+          }
+
           $action = $route['action'];
 
           $controller->$action($params);
