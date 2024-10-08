@@ -54,4 +54,9 @@ class Database
       throw new PDOException($e->getMessage(), (int)$e->getCode());
     }
   }
+
+  public function lastInsertId()
+  {
+    return $this->conn->lastInsertId();
+  }
 }

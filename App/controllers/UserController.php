@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use Framework\Database;
 use Framework\Validation;
+use Framework\Session;
 
 class UserController
 {
@@ -82,6 +83,16 @@ class UserController
       unset($data['password_confirmation']);
 
       $this->db->query('INSERT INTO users (name, email, city, state, password) VALUES (:name, :email, :city, :state, :password)', $data);
+
+      $last_id = $this->db->lastInsertId();
+
+      SESSION::set('user', [
+        'id' => $last_id,
+        'name' => $data['name'],
+        'email' => $data['email'],
+        'city' => $data['city'],
+        'state' => $data['state']
+      ]);
 
       redirect();
     }
