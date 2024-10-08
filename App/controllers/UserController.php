@@ -99,6 +99,58 @@ class UserController
   }
 
   /**
+   * Login a user
+   * 
+   * @return void
+   */
+  public function authorize()
+  {
+    $allowed = ['email', 'password'];
+
+    $data = array_map('sanitize', array_intersect_key($_POST, array_flip($allowed)));
+
+    $errors = [];
+
+    foreach (array_keys($data) as $field) {
+      if (empty($data[$field])) {
+        $errors[$field] = 'The ' . ucfirst($field) . ' field is required';
+      }
+    }
+
+    $string_fields = ['email', 'password'];
+
+    foreach ($string_fields as $field) {
+      if (!Validation::string($field)) {
+        $errors[$field] = 'The ' . ucfirst($field) . ' field is not a string';
+      }
+    }
+
+    $user = $this->db->query('SELECT * FROM users WHERE email = :email', ['email' => $data['email']])->fetch();
+    if (!$user) {
+      $errors += ['email' => 'The Email does not exist'];
+    }
+
+    if (!password_verify($data['password'] ?? '', $user->password ?? '')) {
+      $errors += ['password' => 'The Password is incorrect'];
+    }
+
+    if (!empty($errors)) {
+      load_view('auth/login', ['errors' => $errors, 'data' => $data]);
+      return;
+    } else {
+      SESSION::set('user', [
+        'id' => $user->id,
+        'name' => $user->name,
+        'email' => $user->email,
+        'city' => $user->city,
+        'state' => $user->state
+      ]);
+
+      redirect();
+    }
+  }
+
+  /**
    * Logout a user
    * 
    * @return void
